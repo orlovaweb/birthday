@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet">
+
+<script defer src="build.js"></script></head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <h1>Happy Birthday</h1>
+                <p>У кого скоро день рождения?</p>
+                <button class="check-button default-button">Узнать</button>
+                <div class="about-birthday__wrapper"></div>
+                <div class="add-celebrant-box">
+                    <div class="add-celebrant-box__title title">
+                        <h2>Добавить именинника</h2>
+                    </div>
+                    <form class="add-celebrant-box__form">
+                        <div class="add-celebrant-box__wrapper">
+                            <label class="label-for__input label-for__input__1">
+                                <input name="celebrantName" class="add-celebrant-box__input" type="text" placeholder="Имя">
+                            </label>
+                            <label class="label-for__input label-for__input__2">
+                                <input name="celebrantDate" class="add-celebrant-box__input" type="text"
+                                placeholder="Дата рождения  DD.MM">
+                            </label>
+                        </div>
+
+                        <button type="submit" class="add-celebrant-box__button default-button">
+
+                            Добавить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="celebrants">
+        <div class="container">
+            <div class="celebrants-list">
+                <h2 class="celebrants-list__title title">Список именинников</h2>
+                <!-- <div class="celebrants-item" data-celebrants-id="1">
+                    <div class="celebrants-item__name celebrants-item__string">Имя</div>
+                    <div class="celebrants-item__date celebrants-item__string">25.08</div>
+                    <button class="celebrants-item__delete" title="Удалить данную карточку" data-delete-celebrants-id="5"></button>
+                </div>-->
+            </div>
+            <div class="celebrants-images-block">
+                <img class="celebrants-images-item-right default-img">
+                <img class="celebrants-images-item-left default-img">
+                <!-- <img class="celebrants-images-item-right default-img">
+                <img class="celebrants-images-item-left default-img">
+                <img class="celebrants-images-item-right default-img">
+                <img class="celebrants-images-item-left default-img">
+                <img class="celebrants-images-item-right default-img">
+                <img class="celebrants-images-item-left default-img">
+                <img class="celebrants-images-item-right default-img"> -->
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__logo">
+                <img alt="Логотип">
+            </div>
+            <p>Проект еще в разработке</p>
+        </div>
+    </footer>
+    <div class="modal-overlay modal-overlay_hidden">
+        <div class="delete-modal">
+            <h3 class="delete-modal__question">
+                Вы действительно хотите удалить эту карточку?
+            </h3>
+            <div class="delete-modal__buttons">
+                <button class="delete-modal__button
+        delete-modal__cancel-button">
+                    Отмена
+                </button>
+                <button class="delete-modal__button
+        delete-modal__confirm-button ">
+                    Удалить
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="build/build.js"></script>
+</body>
+
+</html>
