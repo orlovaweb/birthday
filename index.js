@@ -15,14 +15,14 @@ const decorImages = document.querySelectorAll('.default-img');
 const footerLogo = document.querySelector('.footer__logo img');
 footerLogo.src = UrlFooterLogo;
 decorImages[0].src = UrlImg1;
-// decorImages[1].src = UrlImg2;
-// decorImages[2].src = UrlImg3;
-// decorImages[3].src = UrlImg4;
-// decorImages[4].src = UrlImg5;
-// decorImages[5].src = UrlImg6;
-// decorImages[6].src = UrlImg7;
-// decorImages[7].src = UrlImg8;
-// decorImages[8].src = UrlImg9;
+decorImages[1].src = UrlImg2;
+decorImages[2].src = UrlImg3;
+decorImages[3].src = UrlImg4;
+decorImages[4].src = UrlImg5;
+decorImages[5].src = UrlImg6;
+decorImages[6].src = UrlImg7;
+decorImages[7].src = UrlImg8;
+decorImages[8].src = UrlImg9;
 
 const birthdayOfMyRelatives = [
     {
@@ -33,162 +33,162 @@ const birthdayOfMyRelatives = [
         name: 'Полины Орловой',
         date: '07.02',
     },
-    // {
-    //     name: 'Сашки Орлова',
-    //     date: '20.02',
-    // },
-    // {
-    //     name: 'Люды и Даши Орловой',
-    //     date: '25.08',
-    // },
-    // {
-    //     name: 'Вани Орлова',
-    //     date: '15.01',
-    // },
-    // {
-    //     name: 'Инны Орловой',
-    //     date: '21.01',
-    // },
-    // {
-    //     name: 'Вовы Прозорова',
-    //     date: '25.01',
-    // },
-    // {
-    //     name: 'Сени Прозорова',
-    //     date: '01.02',
-    // },
-    // {
-    //     name: 'Тани Орловой',
-    //     date: '12.02',
-    // },
-    // {
-    //     name: 'Даника Орлова',
-    //     date: '22.02',
-    // },
-    // {
-    //     name: 'Миры и Юры Орловых',
-    //     date: '15.03',
-    // },
-    // {
-    //     name: 'Паши Орлова',
-    //     date: '20.03',
-    // },
-    // {
-    //     name: 'Даши Прозоровой',
-    //     date: '05.04',
-    // },
-    // {
-    //     name: 'Светланы Юрьевны Орловой',
-    //     date: '16.04',
-    // },
-    // {
-    //     name: 'Николая Орлова ',
-    //     date: '10.05',
-    // },
-    // {
-    //     name: 'Саша Бугаева',
-    //     date: '22.05',
-    // },
-    // {
-    //     name: 'Настюши Орловой',
-    //     date: '28.05',
-    // },
-    // {
-    //     name: 'Сони Орловой и Ильи Бугаева',
-    //     date: '03.06',
-    // },
-    // {
-    //     name: 'Рады Орловой и Матвея Ротаева',
-    //     date: '05.06',
-    // },
-    // {
-    //     name: 'Анечки Орловой',
-    //     date: '08.06',
-    // },
-    // {
-    //     name: 'Ульяны Интюк',
-    //     date: '14.06',
-    // },
-    // {
-    //     name: 'Саши Орлова',
-    //     date: '19.06',
-    // },
-    // {
-    //     name: 'Насти Интюк',
-    //     date: '20.06',
-    // },
-    // {
-    //     name: 'Кати Бугаевой',
-    //     date: '24.06',
-    // },
-    // {
-    //     name: 'Ванюши Орлова',
-    //     date: '01.07',
-    // },
-    // {
-    //     name: 'Леночки Орловой',
-    //     date: '11.07',
-    // },
-    // {
-    //     name: 'Яши Прозорова',
-    //     date: '15.07',
-    // },
-    // {
-    //     name: 'Ани и Артема Орловых',
-    //     date: '24.07',
-    // },
-    // {
-    //     name: 'Светочки Орловой',
-    //     date: '05.08',
-    // },
-    // {
-    //     name: 'Лили Орловой',
-    //     date: '10.08',
-    // },
-    // {
-    //     name: 'Миши Прозорова',
-    //     date: '17.08',
-    // },
-    // {
-    //     name: 'Марины Орловой',
-    //     date: '10.09',
-    // },
-    // {
-    //     name: 'Тимоши Орлова',
-    //     date: '23.10',
-    // },
-    // {
-    //     name: 'Жанны Орловой',
-    //     date: '07.11',
-    // },
-    // {
-    //     name: 'Маши Орловой',
-    //     date: '08.11',
-    // },
-    // {
-    //     name: 'Мамы',
-    //     date: '17.11',
-    // },
-    // {
-    //     name: 'Миланы Орловой',
-    //     date: '20.11',
-    // },
-    // {
-    //     name: 'Варвары Орловой',
-    //     date: '22.11',
-    // },
-    // {
-    //     name: 'Адели Орловой',
-    //     date: '13.12',
-    // },
-    // {
-    //     name: 'Андрюши Бугаева',
-    //     date: '19.12',
-    // },
-    // {
-    //     name: 'Лены Орловой',
-    //     date: '13.11',
-    // },
+    {
+        name: 'Сашки Орлова',
+        date: '20.02',
+    },
+    {
+        name: 'Люды и Даши Орловой',
+        date: '25.08',
+    },
+    {
+        name: 'Вани Орлова',
+        date: '15.01',
+    },
+    {
+        name: 'Инны Орловой',
+        date: '21.01',
+    },
+    {
+        name: 'Вовы Прозорова',
+        date: '25.01',
+    },
+    {
+        name: 'Сени Прозорова',
+        date: '01.02',
+    },
+    {
+        name: 'Тани Орловой',
+        date: '12.02',
+    },
+    {
+        name: 'Даника Орлова',
+        date: '22.02',
+    },
+    {
+        name: 'Миры и Юры Орловых',
+        date: '15.03',
+    },
+    {
+        name: 'Паши Орлова',
+        date: '20.03',
+    },
+    {
+        name: 'Даши Прозоровой',
+        date: '05.04',
+    },
+    {
+        name: 'Светланы Юрьевны Орловой',
+        date: '16.04',
+    },
+    {
+        name: 'Николая Орлова ',
+        date: '10.05',
+    },
+    {
+        name: 'Саша Бугаева',
+        date: '22.05',
+    },
+    {
+        name: 'Настюши Орловой',
+        date: '28.05',
+    },
+    {
+        name: 'Сони Орловой и Ильи Бугаева',
+        date: '03.06',
+    },
+    {
+        name: 'Рады Орловой и Матвея Ротаева',
+        date: '05.06',
+    },
+    {
+        name: 'Анечки Орловой',
+        date: '08.06',
+    },
+    {
+        name: 'Ульяны Интюк',
+        date: '14.06',
+    },
+    {
+        name: 'Саши Орлова',
+        date: '19.06',
+    },
+    {
+        name: 'Насти Интюк',
+        date: '20.06',
+    },
+    {
+        name: 'Кати Бугаевой',
+        date: '24.06',
+    },
+    {
+        name: 'Ванюши Орлова',
+        date: '01.07',
+    },
+    {
+        name: 'Леночки Орловой',
+        date: '11.07',
+    },
+    {
+        name: 'Яши Прозорова',
+        date: '15.07',
+    },
+    {
+        name: 'Ани и Артема Орловых',
+        date: '24.07',
+    },
+    {
+        name: 'Светочки Орловой',
+        date: '05.08',
+    },
+    {
+        name: 'Лили Орловой',
+        date: '10.08',
+    },
+    {
+        name: 'Миши Прозорова',
+        date: '17.08',
+    },
+    {
+        name: 'Марины Орловой',
+        date: '10.09',
+    },
+    {
+        name: 'Тимоши Орлова',
+        date: '23.10',
+    },
+    {
+        name: 'Жанны Орловой',
+        date: '07.11',
+    },
+    {
+        name: 'Маши Орловой',
+        date: '08.11',
+    },
+    {
+        name: 'Мамы',
+        date: '17.11',
+    },
+    {
+        name: 'Миланы Орловой',
+        date: '20.11',
+    },
+    {
+        name: 'Варвары Орловой',
+        date: '22.11',
+    },
+    {
+        name: 'Адели Орловой',
+        date: '13.12',
+    },
+    {
+        name: 'Андрюши Бугаева',
+        date: '19.12',
+    },
+    {
+        name: 'Лены Орловой',
+        date: '13.11',
+    },
 ];
 // Добавляем id каждому дню рождения
 const birthdays = birthdayOfMyRelatives.map((birthday, index) => {
@@ -221,7 +221,7 @@ const createHtmlCard = (dataCelebrantsId, celebrantsName, celebrantsDate) => {
 }
 
 // Функция создания errorMessage
-const generateErrorMessage = (message, flag) =>{
+const generateErrorMessage = (message, flag) => {
     const labelForInput = document.querySelector(`.label-for__input__${flag}`);
     const errorMessage = document.createElement('span');
     errorMessage.className = 'error-message-block';
@@ -255,9 +255,9 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
     errorMessageArray.forEach(message => {
         message?.remove();
     });
-    
+
     const inputNameRaw = target.celebrantName.value.trim();
-    const inputDateRaw = target.celebrantDate.value.trim(); 
+    const inputDateRaw = target.celebrantDate.value.trim();
     // сырая вводимая дата, дальше обрабатываем на корректность ввода, 
     // включая, при вводе 1.10 -> 01.10; 1.1 -> 01.01
 
@@ -268,22 +268,22 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
     let resultInputName = inputNameRaw;
     if (regExpName.test(inputNameRaw)) {
         const nameArray = regExpName.exec(inputNameRaw);
-        if (!regExpNameUpperStart.test(inputNameRaw)) {         
-            if(nameArray[3]){
+        if (!regExpNameUpperStart.test(inputNameRaw)) {
+            if (nameArray[3]) {
                 const firstLetter = nameArray[3][0].toUpperCase();
                 resultInputName = firstLetter + inputNameRaw.slice(1);
-            }else{
+            } else {
                 const firstLetter1 = nameArray[1][0].toUpperCase();
                 const firstLetter2 = nameArray[2][0].toUpperCase();
                 resultInputName = firstLetter1 + nameArray[1].slice(1) + ' ' + firstLetter2 + nameArray[2].slice(1);
             }
-        } 
+        }
     } else {
         generateErrorMessage("Ввели некорректное имя.", 1);
         isValidName = false;
     }
-    const inputName = resultInputName; 
-    
+    const inputName = resultInputName;
+
     //Валидация даты
     let isValidDate = true;
     const regExpDate = /^([0-2][1-9]|[0-3][0-1]|[1-9])\.([0]\d|[1][0-2]|\d)$/;
@@ -304,9 +304,9 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
         generateErrorMessage("Ввели некорректную дату.", 2);
         isValidDate = false;
     }
-    const inputDate = resultInputDate; 
+    const inputDate = resultInputDate;
 
-    if(isValidDate && isValidName){
+    if (isValidDate && isValidName) {
         //Проверяем, есть ли запись с такой датой.  Если есть, конкатенируем имена. Если нет, просто создаем новый объект.
         if (dateArrayOfBirthdays.includes(inputDate)) {
             birthdays.forEach((celebrant, index) => {
