@@ -406,6 +406,14 @@ const createHtmlMessage = (message) => {
     messageAboutBirthday.textContent = message;
     aboutBirthdayWrapper.append(messageAboutBirthday);
 }
+//Функция форматирования слова "день" в зависимости от числительного
+const renderPhrase = (count) => {
+    const lastOne = count % 10;
+    if (count > 4 && count < 21) return "дней";
+    if ([2, 3, 4].indexOf(lastOne) >= 0) return "дня";
+    if (lastOne === 1) return "день";
+    return "дней";
+}
 //Функция вывода найденного ближайшего дня рождения
 const outputNextBirthday = (isTodayBirthday, celebrant, minTimeToNextBirthday) => {
     if (isTodayBirthday) {
@@ -415,7 +423,7 @@ const outputNextBirthday = (isTodayBirthday, celebrant, minTimeToNextBirthday) =
     else {
         const daysToNextBirthday = Math.round(minTimeToNextBirthday / 1000 / 60 / 60 / 24);
         if (daysToNextBirthday) {
-            createHtmlMessage(`Осталось ${daysToNextBirthday} дней до дня рождения\n${celebrant.name} (дата ${celebrant.date}) `);
+            createHtmlMessage(`Осталось ${daysToNextBirthday} ${renderPhrase(daysToNextBirthday)} до дня рождения\n${celebrant.name} (дата ${celebrant.date}) `);
         } else {
             createHtmlMessage(`Cледующий день рождения уже завтра! У ${celebrant.name}!`);
         }
