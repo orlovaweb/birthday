@@ -16,7 +16,14 @@
 <body>
     <!-- <input type="text" id="db"> -->
     <header class="header">
-        <div class="container">
+        <div id="scene" class="scene">
+
+            <div data-depth="0.4" class="header-left-decor"></div>
+            <div data-depth="0.8" class="header-right-decor-first"></div>
+            <div data-depth="0.2" class="header-right-decor-second"></div>
+        </div>
+
+        <div class="container" id="scene">
             <div class="header__inner">
                 <h1>Happy Birthday</h1>
                 <p>У кого скоро день рождения?</p>
@@ -34,7 +41,7 @@
                             </label>
                             <label class="label-for__input label-for__input__2">
                                 <input id="celebrantDate" name="celebrantDate" class="add-celebrant-box__input"
-                                    type="text" placeholder="Дата рождения  DD.MM.YYYY" data-format="**.**.****"
+                                    type="text" placeholder="Дата рождения" data-format="**.**.****"
                                     data-mask="MM.DD.YYYY" autocomplete="off">
                             </label>
                         </div>
@@ -46,7 +53,11 @@
                     </form>
                 </div>
             </div>
+            <!-- </div> -->
         </div>
+        <!-- <div class="header-left-decor"></div>
+        <div class="header-right-decor"></div> -->
+
     </header>
     <section class="celebrants">
         <div class="container">

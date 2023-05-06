@@ -5,8 +5,11 @@ import "./module";
 
 import { renderBirthdays } from './module';
 import AirDatepicker from 'air-datepicker';
+import Parallax from 'parallax-js'
 import 'air-datepicker/air-datepicker.css';
 
+var scene = document.getElementById('scene');
+var parallaxInstance = new Parallax(scene);
 //подключаем air-datepicker к дате из формы ввода именинника
 new AirDatepicker("#celebrantDate");
 //получаем всех именинников
@@ -104,7 +107,6 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
     //Валидация даты
     const isValidDate = moment(inputDateRaw, "DD.MM.YYYY", true).isValid();
 
-    // console.log(inputYear);
     if (!isValidDate) {
         generateErrorMessage("Ввели некорректную дату.", 2);
     }
@@ -132,21 +134,8 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
     if (isValidDate && isValidName) {
         const newId = new Date().getTime();
         birthdays.push({ id: newId, name: inputName, date: inputDateRaw });
-        // console.log(birthdays);
-        // dateArrayOfBirthdays.push(inputDate);
-        //Проверяем, есть ли запись с такой датой.  Если есть, конкатенируем имена. Если нет, просто создаем новый объект.
-        // if (dateArrayOfBirthdays.includes(inputDate)) {
-        //     birthdays.forEach((celebrant, index) => {
-        //         if (celebrant.date === inputDate) {
-        //             celebrant.name = celebrant.name + ' и ' + inputName;
-        //             updateHtmlCardOfCelebrant(index);
-        //         }
-        //     });
-        // }
-        // else {
         const newHtmlCard = createHtmlCard(newId, inputName, inputDateRaw);
         celebrantsList.append(newHtmlCard);
-        // }
         localStorage.setItem("birthdays", JSON.stringify(birthdays));
         addCelebrantBoxForm.reset();
     }
@@ -197,7 +186,6 @@ const getNextBirthday = (birthdays) => {
 
         return fullBithday;
     });
-    // console.log(birthdayArray);
 
     let indexOfNearestBirthday = 0;
     let nearestBirthday = birthdayArray[indexOfNearestBirthday];
@@ -206,19 +194,7 @@ const getNextBirthday = (birthdays) => {
     let isTodayBirthday = false;
     birthdayArray.forEach((birthday, index) => {
         let currentTimeToNextBirthday = birthday.getTime() - Date.now();
-        // ****можно упростить вложенность, нужен ли indexOfNearestBirthday?
-        // if (currentTimeToNextBirthday < 0) {
-        //     isTodayBirthday = true;
-        //     nearestBirthday = birthday;
-        //     minTimeToNextBirthday = currentTimeToNextBirthday;
-        //     indexOfNearestBirthday = index;
-        // } else if (currentTimeToNextBirthday < minTimeToNextBirthday) {
-        //     nearestBirthday = birthday;
-        //     minTimeToNextBirthday = currentTimeToNextBirthday;
-        //     indexOfNearestBirthday = index;
-        // }
         if (currentTimeToNextBirthday < minTimeToNextBirthday) {
-
             nearestBirthday = birthday;
             minTimeToNextBirthday = currentTimeToNextBirthday;
             indexOfNearestBirthday = index;
@@ -233,12 +209,13 @@ const getNextBirthday = (birthdays) => {
             celebrantArray.push(birthdays[index])
         };
     });
-    console.log(celebrantArray);
+    // console.log(celebrantArray);
     // const celebrant = birthdays[indexOfNearestBirthday];
     return {
         isTodayBirthday,
         celebrantArray,
-        minTimeToNextBirthday
+        minTimeToNextBirthday,
+        nearestBirthday
     }
 }
 //Функция генерации сообщения в html
@@ -253,11 +230,14 @@ const createHtmlMessage = (message) => {
 //Функция форматирования слова "день" в зависимости от числительного
 const renderPhrase = (count) => {
     const lastOne = count % 10;
+    const lastTwo = count % 100;
     if (count > 4 && count < 21) return "дней";
+    if (lastTwo > 4 && lastTwo < 21) return "дней";
     if ([2, 3, 4].indexOf(lastOne) >= 0) return "дня";
     if (lastOne === 1) return "день";
     return "дней";
 }
+
 //Функция форматирования слова "лет" в зависимости от числительного
 const renderAge = (count) => {
     const lastOne = count % 10;
@@ -266,79 +246,81 @@ const renderAge = (count) => {
     if (lastOne === 1) return "год";
     return "лет";
 }
-const getCelebrantsNames = (celebrantArray) => {
-    console.log(celebrantArray)
+const getCelebrantsNames = (celebrantArray, date) => {
+    console.log("in getCelebrantsNames()")
     let message = "";
-    const currentYear = new Date().getFullYear();
+    console.log(date);
+    const currentYear = date.getFullYear();
     celebrantArray.forEach((celebrant, index) => {
         const birthdayYear = Number(celebrant.date.slice(6));
         const age = currentYear - birthdayYear;
         if (index === 0) {
-            message += celebrant.name + " (" + age + renderAge(age) + " )";
+            message += celebrant.name + " (" + age + " " + renderAge(age) + " )";
         } else {
-            message += ", " + celebrant.name + " (" + age + renderAge(age) + " )";
+            message += ", " + celebrant.name + " (" + age + " " + renderAge(age) + " )";
         }
     })
     return message;
 }
 const getCelebrantsDate = (date) => {
-    let message = date.slice(0, 2);
-    const month = date.slice(3, 5);
+    let message = date.getDate().toString();
+    const month = date.getMonth();
     switch (month) {
-        case "01":
+        case 0:
             message += " января";
             break;
-        case "02":
+        case 1:
             message += " февраля";
             break;
-        case "03":
+        case 2:
             message += " марта";
             break;
-        case "04":
+        case 3:
             message += " апреля";
             break;
-        case "05":
+        case 4:
             message += " мая";
             break;
-        case "06":
+        case 5:
             message += " июня";
             break;
-        case "07":
+        case 6:
             message += " июля";
             break;
-        case "08":
+        case 7:
             message += " августа";
             break;
-        case "09":
+        case 8:
             message += " сентября";
             break;
-        case "10":
+        case 9:
             message += " октября";
             break;
-        case "11":
+        case 10:
             message += " ноября";
             break;
-        case "12":
+        case 11:
             message += " декабря";
             break;
         default:
             break;
     }
-    message += " " + new Date().getFullYear();
+    message += " " + date.getFullYear();
     return message;
 };
 //Функция вывода найденного ближайшего дня рождения
-const outputNextBirthday = (isTodayBirthday, celebrants, minTimeToNextBirthday) => {
+const outputNextBirthday = (isTodayBirthday, celebrants, minTimeToNextBirthday, nearestBirthday) => {
+    // console.log(nearestBirthday);
     if (isTodayBirthday) {
 
-        createHtmlMessage(`Сегодня, ${getCelebrantsDate(celebrants[0].date)}, празднует день рождения ${getCelebrantsNames(celebrants)}!`);
+        createHtmlMessage(`Сегодня, ${getCelebrantsDate(nearestBirthday)}, празднует день рождения ${getCelebrantsNames(celebrants, nearestBirthday)}!`);
     }
     else {
         const daysToNextBirthday = Math.round(minTimeToNextBirthday / 1000 / 60 / 60 / 24);
         if (daysToNextBirthday) {
-            createHtmlMessage(`Осталось ${daysToNextBirthday} ${renderPhrase(daysToNextBirthday)} до ближайшего дня рождения.\n Именинник(и): ${getCelebrantsNames(celebrants)}. Дата ${getCelebrantsDate(celebrants[0].date)}.`);
+            createHtmlMessage(`Осталось ${daysToNextBirthday} ${renderPhrase(daysToNextBirthday)} до ближайшего дня рождения.\n Именинник(и): ${getCelebrantsNames(celebrants, nearestBirthday)}. Дата ${getCelebrantsDate(nearestBirthday)}.`);
         } else {
-            createHtmlMessage(`Cледующий день рождения уже завтра! Именинник(и) ${getCelebrantsNames(celebrants)}!`);
+            createHtmlMessage(`Cледующий день рождения уже завтра! Именинник(и) ${getCelebrantsNames(celebrants, nearestBirthday)}!`);
         }
     }
 }
@@ -346,7 +328,7 @@ const outputNextBirthday = (isTodayBirthday, celebrants, minTimeToNextBirthday) 
 
 const checkButton = document.querySelector('.check-button');
 checkButton.addEventListener('click', () => {
-    const { isTodayBirthday, celebrantArray, minTimeToNextBirthday } = getNextBirthday(birthdays);
-    console.log(celebrantArray);
-    outputNextBirthday(isTodayBirthday, celebrantArray, minTimeToNextBirthday);
+    const { isTodayBirthday, celebrantArray, minTimeToNextBirthday, nearestBirthday } = getNextBirthday(birthdays);
+    // console.log(celebrantArray);
+    outputNextBirthday(isTodayBirthday, celebrantArray, minTimeToNextBirthday, nearestBirthday);
 })

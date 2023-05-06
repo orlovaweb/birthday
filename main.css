@@ -43,27 +43,43 @@ h1,h2,p{
     text-align: center;
     position: relative;
 }
-.header::before{
-    content: "";
+.scene{
+    position: relative;
+    width: 100%;
+    height: 0px;
+}
+.header-left-decor{
     background-image: url(img/decor1.svg);
     background-repeat: no-repeat;
+    background-size: contain;
     position: absolute;
-    width: 145px;
+    width: 235px;
     height: 241px;
     z-index: 1;
     top: -12px;
-    left: 0;
+    left: 10px !important;
 }
-.header::after{
-    content: "";
+.header-right-decor-first{
     background-image: url(img/decor2.svg);
     background-repeat: no-repeat;
+    background-size: contain;
     position: absolute;
-    width: 125px;
-    height: 241px;
+    width: 148px;
+    height: 152px;
     z-index: 1;
-    top: 65px;
-    right: 0;
+    top: 65px !important;
+    left: calc(100% - 80px) !important;
+}
+.header-right-decor-second{
+    background-image: url(img/decor3.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    width: 148px;
+    height: 152px;
+    z-index: 1;
+    top: 140px !important;
+    left: calc(100% - 120px) !important;
 }
 .header__inner h1{
     font-size: 64px;
@@ -315,12 +331,24 @@ h1,h2,p{
     color: #fff;
     border-color: #c93d06;
 }
-@media (max-width: 770px) {
-    .header::before{
-        left: -80px;
+@media (max-width: 1000px) {
+    .header-left-decor{
+        width: 180px;
+        left: -30px !important;
     }
-    .header::after{
-        right: -80px;
+    
+}
+@media (max-width: 770px) {
+    .header-left-decor{
+        width: 150px;
+        left: -80px !important;
+    }
+    .header-right-decor-first{
+        left: calc(100% - 40px) !important;
+    }
+    .header-right-decor-second{
+        top: 100px !important;
+        left: calc(100% - 40px) !important;
     }
     .delete-modal {
         width: 90%;
@@ -330,6 +358,15 @@ h1,h2,p{
     }
 }
 @media (max-width: 600px) {
+    .header-left-decor{
+        top: -50px !important;
+width: 80px;
+left: -20px !important;
+    }
+    .header-right-decor-first, .header-right-decor-second{
+        width: 80px;
+        /* height: 0; */
+            }
     .header::before{
         top: -12px;
         left: -100px;
@@ -343,14 +380,6 @@ h1,h2,p{
     }
 }
 @media (max-width: 480px) {
-    .header::before{
-        top: -12px;
-        left: -110px;
-    }
-    .header::after{
-        top: 35px;
-        right: -100px;
-    }
     .add-celebrant-box__wrapper{
         display: block;
         margin: 0 20px;
