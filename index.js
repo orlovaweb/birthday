@@ -8,10 +8,15 @@ import AirDatepicker from 'air-datepicker';
 import Parallax from 'parallax-js'
 import 'air-datepicker/air-datepicker.css';
 
+// подключаем parallax-js
 var scene = document.getElementById('scene');
-var parallaxInstance = new Parallax(scene);
+var parallaxInstance = new Parallax(scene, {
+    relativeInput: true
+});
 //подключаем air-datepicker к дате из формы ввода именинника
-new AirDatepicker("#celebrantDate");
+new AirDatepicker("#celebrantDate", {
+    autoClose: true
+});
 //получаем всех именинников
 const birthdays = renderBirthdays();
 // Функция по созданию html карточки
@@ -37,6 +42,12 @@ const createHtmlCard = (dataCelebrantsId, celebrantsName, celebrantsDate) => {
 
     return celebrantsItem;
 }
+//создаем задачи на основе birthdays
+const celebrantsList = document.querySelector('.celebrants-list');
+birthdays.forEach(birthday => {
+    const newBirthdayCard = createHtmlCard(birthday.id, birthday.name, birthday.date);
+    celebrantsList.append(newBirthdayCard);
+});
 
 // Функция создания errorMessage
 const generateErrorMessage = (message, flag) => {
@@ -47,24 +58,82 @@ const generateErrorMessage = (message, flag) => {
     labelForInput.append(errorMessage);
 }
 
-//функция по обновлению имени html карточки
-// const updateHtmlCardOfCelebrant = (index) => {
-//     const celebrantsHtmlCardArray = document.querySelectorAll('.celebrants-item');
-//     const celebrantsItemName = celebrantsHtmlCardArray[index].querySelector('.celebrants-item__name');
-//     celebrantsItemName.textContent = birthdays[index].name;
-// }
-
-//создаем задачи на основе birthdays
-const celebrantsList = document.querySelector('.celebrants-list');
-birthdays.forEach(birthday => {
-    const newBirthdayCard = createHtmlCard(birthday.id, birthday.name, birthday.date);
-    celebrantsList.append(newBirthdayCard);
-});
-
 const addCelebrantBoxForm = document.querySelector('.add-celebrant-box__form');
 
 //создаем задачу из данных формы
-// const dateArrayOfBirthdays = birthdays.map(celebrant => celebrant.date);
+let inputName = "";
+let isValidName = false;
+let isValidDate = false;
+
+//ф-я валидации имени
+const checkNameInputOnValidation = (inputNameRaw) => {
+    const regExpNameUpperStart = /^(([А-ЯA-Z][а-яa-z]+ [А-ЯA-Z][а-яa-z]+)|([А-ЯA-Z][а-яa-z]+))$/;
+    const regExpName = /^(?:([A-Za-zа-яА-я]+) ([A-Za-zа-яА-я]+))|([A-Za-zа-яА-я]+)$/;
+    let resultInputName = inputNameRaw;
+
+    if (!inputNameRaw) {
+        generateErrorMessage("Заполните имя", 1);
+        isValidName = false;
+    }
+    else {
+        if (regExpName.test(inputNameRaw)) {
+            const nameArray = regExpName.exec(inputNameRaw);
+            if (!regExpNameUpperStart.test(inputNameRaw)) {
+                if (nameArray[3]) {
+                    const firstLetter = nameArray[3][0].toUpperCase();
+                    resultInputName = firstLetter + inputNameRaw.slice(1);
+                } else {
+                    const firstLetter1 = nameArray[1][0].toUpperCase();
+                    const firstLetter2 = nameArray[2][0].toUpperCase();
+                    resultInputName = firstLetter1 + nameArray[1].slice(1) + ' ' + firstLetter2 + nameArray[2].slice(1);
+                }
+            }
+            isValidName = true;
+        } else {
+            generateErrorMessage("Ввели некорректное имя.", 1);
+            isValidName = false;
+        }
+    }
+    inputName = resultInputName;
+    return isValidName;
+
+}
+const checkDateInputOnValidation = (inputDateRaw) => {
+    if (!inputDateRaw) {
+        generateErrorMessage("Заполните дату", 2);
+        isValidDate = false;
+    }
+    else {
+
+        isValidDate = moment(inputDateRaw, "DD.MM.YYYY", true).isValid();
+        if (!isValidDate) {
+            generateErrorMessage("Ввели некорректную дату.", 2);
+            isValidDate = false;
+        }
+    }
+    return isValidDate;
+}
+//валидация ввода имени
+const inputNameField = addCelebrantBoxForm.querySelector('.input-name');
+inputNameField.addEventListener('input', (event) => {
+    const { target } = event;
+    const { value } = target;
+    const labelForInput = document.querySelector('.label-for__input__1');
+    const errorMessage = labelForInput.querySelector('.error-message-block');
+    errorMessage?.remove();
+    isValidName = checkNameInputOnValidation(value);
+})
+// //валидация ввода даты
+const inputDateField = addCelebrantBoxForm.querySelector(".input-date");
+inputDateField.addEventListener('change', (event) => {
+    const { target } = event;
+    const { value } = target;
+    const labelForInput = document.querySelector('.label-for__input__2');
+    const errorMessage = labelForInput.querySelector('.error-message-block');
+    errorMessage?.remove();
+    isValidDate = checkDateInputOnValidation(value);
+})
+
 
 addCelebrantBoxForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -74,67 +143,15 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
         message?.remove();
     });
 
-    const inputNameRaw = target.celebrantName.value.trim();
-    const inputDateRaw = target.celebrantDate.value.trim();
-    const inputDate = inputDateRaw.slice(0, 5);
-    const inputYear = inputDateRaw.slice(6, 10);
-    // сырая вводимая дата, дальше обрабатываем на корректность ввода, 
-    // включая, при вводе 1.10 -> 01.10; 1.1 -> 01.01
-
-    //Валидация имени
-    let isValidName = true;
-    const regExpNameUpperStart = /^(([А-ЯA-Z][а-яa-z]+ [А-ЯA-Z][а-яa-z]+)|([А-ЯA-Z][а-яa-z]+))$/;
-    const regExpName = /^(?:([A-Za-zа-яА-я]+) ([A-Za-zа-яА-я]+))|([A-Za-zа-яА-я]+)$/;
-    let resultInputName = inputNameRaw;
-    if (regExpName.test(inputNameRaw)) {
-        const nameArray = regExpName.exec(inputNameRaw);
-        if (!regExpNameUpperStart.test(inputNameRaw)) {
-            if (nameArray[3]) {
-                const firstLetter = nameArray[3][0].toUpperCase();
-                resultInputName = firstLetter + inputNameRaw.slice(1);
-            } else {
-                const firstLetter1 = nameArray[1][0].toUpperCase();
-                const firstLetter2 = nameArray[2][0].toUpperCase();
-                resultInputName = firstLetter1 + nameArray[1].slice(1) + ' ' + firstLetter2 + nameArray[2].slice(1);
-            }
-        }
-    } else {
-        generateErrorMessage("Ввели некорректное имя.", 1);
-        isValidName = false;
+    const inputDate = target.celebrantDate.value.trim();
+    if (inputDate) {
+        isValidDate = true;
     }
-    const inputName = resultInputName;
-
-    //Валидация даты
-    const isValidDate = moment(inputDateRaw, "DD.MM.YYYY", true).isValid();
-
-    if (!isValidDate) {
-        generateErrorMessage("Ввели некорректную дату.", 2);
-    }
-    // let isValidDate = true;
-    // const regExpDate = /^([0-2][1-9]|[0-3][0-1]|[1-9])\.([0]\d|[1][0-2]|\d)$/;
-    // let mediateDate = inputDateRaw;
-    // let resultInputDate = inputDateRaw;
-    // if (regExpDate.test(inputDateRaw)) {
-    //     const stringValueArray = regExpDate.exec(inputDateRaw);
-    //     if (/^(\d)\.\d+$/.test(inputDateRaw)) {
-    //         mediateDate = '0' + inputDateRaw;
-    //     }
-    //     if (/^\d+\.(\d)$/.test(mediateDate)) {
-    //         const index = mediateDate.search(/(?<=\.\d)/);
-    //         resultInputDate = mediateDate.slice(0, index - 1) + `0${stringValueArray[2]}`;
-    //     } else {
-    //         resultInputDate = mediateDate;
-    //     }
-    // } else {
-    // generateErrorMessage("Ввели некорректную дату.", 2);
-    //     isValidDate = false;
-    // }
-    // const inputDate = resultInputDate;
-
+    // заполнение 
     if (isValidDate && isValidName) {
         const newId = new Date().getTime();
-        birthdays.push({ id: newId, name: inputName, date: inputDateRaw });
-        const newHtmlCard = createHtmlCard(newId, inputName, inputDateRaw);
+        birthdays.push({ id: newId, name: inputName, date: inputDate });
+        const newHtmlCard = createHtmlCard(newId, inputName, inputDate);
         celebrantsList.append(newHtmlCard);
         localStorage.setItem("birthdays", JSON.stringify(birthdays));
         addCelebrantBoxForm.reset();
@@ -166,7 +183,6 @@ confirmButton.addEventListener('click', (event) => {
         return birthdays[index].id == deleteCelebrantsId;
     });
     birthdays.splice(indexOfDeleteCelebrantsItem, 1);
-    // dateArrayOfBirthdays.splice(indexOfDeleteCelebrantsItem, 1);
     localStorage.setItem("birthdays", JSON.stringify(birthdays));
     modalOverlay.classList.add('modal-overlay_hidden');
 });
@@ -209,8 +225,6 @@ const getNextBirthday = (birthdays) => {
             celebrantArray.push(birthdays[index])
         };
     });
-    // console.log(celebrantArray);
-    // const celebrant = birthdays[indexOfNearestBirthday];
     return {
         isTodayBirthday,
         celebrantArray,
@@ -247,9 +261,7 @@ const renderAge = (count) => {
     return "лет";
 }
 const getCelebrantsNames = (celebrantArray, date) => {
-    console.log("in getCelebrantsNames()")
     let message = "";
-    console.log(date);
     const currentYear = date.getFullYear();
     celebrantArray.forEach((celebrant, index) => {
         const birthdayYear = Number(celebrant.date.slice(6));
@@ -310,7 +322,6 @@ const getCelebrantsDate = (date) => {
 };
 //Функция вывода найденного ближайшего дня рождения
 const outputNextBirthday = (isTodayBirthday, celebrants, minTimeToNextBirthday, nearestBirthday) => {
-    // console.log(nearestBirthday);
     if (isTodayBirthday) {
 
         createHtmlMessage(`Сегодня, ${getCelebrantsDate(nearestBirthday)}, празднует день рождения ${getCelebrantsNames(celebrants, nearestBirthday)}!`);
@@ -329,6 +340,5 @@ const outputNextBirthday = (isTodayBirthday, celebrants, minTimeToNextBirthday, 
 const checkButton = document.querySelector('.check-button');
 checkButton.addEventListener('click', () => {
     const { isTodayBirthday, celebrantArray, minTimeToNextBirthday, nearestBirthday } = getNextBirthday(birthdays);
-    // console.log(celebrantArray);
     outputNextBirthday(isTodayBirthday, celebrantArray, minTimeToNextBirthday, nearestBirthday);
 })
