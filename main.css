@@ -175,9 +175,21 @@ h1,h2,p{
     margin-bottom: 23px;
     cursor: pointer;
 }
+.add-celebrant-box__button-disabled {
+    color: #6d6d70;
+    background-color: transparent;
+    border: 1px solid #6d6d70;
+    margin-bottom: 23px;
+    cursor: pointer;
+}
+.add-celebrant-box__button.add-celebrant-box__button-disabled:hover{
+    background-color: transparent;
+    color: #6d6d70;
+}
 .add-celebrant-box__button:hover{
     background-color: var(--check-button-hover);
     color: #fff;
+    cursor:auto;
 }
 .add-celebrant-box__button:active{
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -331,6 +343,47 @@ h1,h2,p{
     color: #fff;
     border-color: #c93d06;
 }
+.modal-success-addition{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    /* display: flex; */
+    
+    background-color: rgba(4, 102, 9, 0.99);
+    z-index: 1000;
+    transition: 1s ease;
+    opacity: 0.9;
+}
+.modal-success-addition-hidden{
+    top: -100%;
+    opacity: 0;
+}
+.modal-success-addition__content{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    color: #fcfcfc;
+    
+}
+.modal-success-addition i{
+    font-size: 18px;
+}
+.modal-success-addition-close{
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    color:#fff;
+    font-size: 21px;
+    cursor: pointer;
+}
+
 @media (max-width: 1000px) {
     .header-left-decor{
         width: 180px;
@@ -360,20 +413,11 @@ h1,h2,p{
 @media (max-width: 600px) {
     .header-left-decor{
         top: -50px !important;
-width: 80px;
-left: -20px !important;
+        width: 80px;
+        left: -20px !important;
     }
     .header-right-decor-first, .header-right-decor-second{
         width: 80px;
-        /* height: 0; */
-            }
-    .header::before{
-        top: -12px;
-        left: -100px;
-    }
-    .header::after{
-        top: 35px;
-        right: -100px;
     }
     .celebrants-images-block {
         display: none

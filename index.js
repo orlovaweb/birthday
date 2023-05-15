@@ -2,20 +2,53 @@ import moment from 'moment';
 import './main.css';
 
 import "./module";
-
 import { renderBirthdays } from './module';
 import AirDatepicker from 'air-datepicker';
 import Parallax from 'parallax-js'
 import 'air-datepicker/air-datepicker.css';
+
+import favicon from './favicon.ico';
+import imgPreview from './preview.png';
+
+const link = document.querySelector('link[rel="shortcut icon"]');
+// const meta = document.querySelector('meta[name="og:image"]');
+link.setAttribute('href', favicon);
+// meta.setAttribute('content', imgPreview);
 
 // подключаем parallax-js
 var scene = document.getElementById('scene');
 var parallaxInstance = new Parallax(scene, {
     relativeInput: true
 });
+const renderOptionIsMobile = () => {
+    if (window.innerWidth < 700) {
+        return { isMobile: true }
+    }
+    return { isMobile: false }
+}
 //подключаем air-datepicker к дате из формы ввода именинника
-new AirDatepicker("#celebrantDate", {
-    autoClose: true
+// new AirDatepicker("#celebrantDate", {
+//     autoClose: true,
+//     ...renderOptionIsMobile()
+// onSelect(/{ date, datepicker }) {
+// var event = new Event('input');
+// datepicker.dispatchEvent(new Event('input'));
+// datepicker.$el._triggerOnSelect('input');
+// console.log(datepicker);
+// console.log(datepicker.$el.value);
+// }
+// });
+const datepickerHtml = document.querySelector("#celebrantDate");
+
+const picker = new AirDatepicker(datepickerHtml, {
+    // dateFormat: 'dd.mm.yyyy',
+    autoClose: true,
+    ...renderOptionIsMobile(),
+    onSelect({ selectedDates, datepicker }) {
+        // console.log(datepicker.$el.value);
+        datepickerHtml.value = datepicker.$el.value;
+        datepickerHtml.dispatchEvent(new Event('input')); // вызываем обработчик ввода
+    }
 });
 //получаем всех именинников
 const birthdays = renderBirthdays();
@@ -61,41 +94,29 @@ const generateErrorMessage = (message, flag) => {
 const addCelebrantBoxForm = document.querySelector('.add-celebrant-box__form');
 
 //создаем задачу из данных формы
-let inputName = "";
 let isValidName = false;
 let isValidDate = false;
 
 //ф-я валидации имени
 const checkNameInputOnValidation = (inputNameRaw) => {
-    const regExpNameUpperStart = /^(([А-ЯA-Z][а-яa-z]+ [А-ЯA-Z][а-яa-z]+)|([А-ЯA-Z][а-яa-z]+))$/;
-    const regExpName = /^(?:([A-Za-zа-яА-я]+) ([A-Za-zа-яА-я]+))|([A-Za-zа-яА-я]+)$/;
-    let resultInputName = inputNameRaw;
-
+    const regExpName = /^([A-Za-zА-Яа-я]*\s*){1,4}[A-Za-zА-Яа-я]*$/;
+    const regExpSoLongName = /^([A-Za-zА-Яа-я]*\s*){5,}[A-Za-zА-Яа-я]*$/;
     if (!inputNameRaw) {
         generateErrorMessage("Заполните имя", 1);
-        isValidName = false;
+        return false;
     }
-    else {
-        if (regExpName.test(inputNameRaw)) {
-            const nameArray = regExpName.exec(inputNameRaw);
-            if (!regExpNameUpperStart.test(inputNameRaw)) {
-                if (nameArray[3]) {
-                    const firstLetter = nameArray[3][0].toUpperCase();
-                    resultInputName = firstLetter + inputNameRaw.slice(1);
-                } else {
-                    const firstLetter1 = nameArray[1][0].toUpperCase();
-                    const firstLetter2 = nameArray[2][0].toUpperCase();
-                    resultInputName = firstLetter1 + nameArray[1].slice(1) + ' ' + firstLetter2 + nameArray[2].slice(1);
-                }
-            }
-            isValidName = true;
-        } else {
-            generateErrorMessage("Ввели некорректное имя.", 1);
-            isValidName = false;
+    if (regExpName.test(inputNameRaw)) {
+        return true;
+    } else {
+        if (regExpSoLongName.test(inputNameRaw)) {
+            generateErrorMessage("Ввели больше пяти слов.", 1);
+            return false;
         }
+        generateErrorMessage("Ввели некорректное имя.", 1);
+        return false;
     }
-    inputName = resultInputName;
-    return isValidName;
+
+
 
 }
 const checkDateInputOnValidation = (inputDateRaw) => {
@@ -115,38 +136,71 @@ const checkDateInputOnValidation = (inputDateRaw) => {
 }
 //валидация ввода имени
 const inputNameField = addCelebrantBoxForm.querySelector('.input-name');
+const addCelebrantBoxButton = addCelebrantBoxForm.querySelector('.add-celebrant-box__button');
+
 inputNameField.addEventListener('input', (event) => {
     const { target } = event;
     const { value } = target;
     const labelForInput = document.querySelector('.label-for__input__1');
     const errorMessage = labelForInput.querySelector('.error-message-block');
     errorMessage?.remove();
-    isValidName = checkNameInputOnValidation(value);
+    isValidName = checkNameInputOnValidation(value.trim());
+    if (isValidName && isValidDate) {
+        addCelebrantBoxButton.classList.remove('add-celebrant-box__button-disabled');
+    }
 })
 // //валидация ввода даты
 const inputDateField = addCelebrantBoxForm.querySelector(".input-date");
-inputDateField.addEventListener('change', (event) => {
+
+inputDateField.addEventListener('input', (event) => {
     const { target } = event;
     const { value } = target;
     const labelForInput = document.querySelector('.label-for__input__2');
     const errorMessage = labelForInput.querySelector('.error-message-block');
     errorMessage?.remove();
-    isValidDate = checkDateInputOnValidation(value);
+    if (!isValidDate && value.length == 10) {
+        isValidDate = checkDateInputOnValidation(value.trim());
+        console.log("in validation, length =10")
+    }
+    if (isValidName && isValidDate) {
+        addCelebrantBoxButton.classList.remove('add-celebrant-box__button-disabled');
+    }
 })
-
+inputDateField.addEventListener('change', (event) => {
+    const { target } = event;
+    const { value } = target;
+    // const labelForInput = document.querySelector('.label-for__input__2');
+    // const errorMessage = labelForInput.querySelector('.error-message-block');
+    // errorMessage?.remove();
+    if (!isValidDate && value.length < 10) {
+        generateErrorMessage("Введите полную дату.", 2);
+    }
+    // isValidDate = checkDateInputOnValidationOnChange(value.trim());
+    console.log("in validation change")
+})
 
 addCelebrantBoxForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const { target } = event;
-    const errorMessageArray = document.querySelectorAll('.error-message-block');
-    errorMessageArray.forEach(message => {
-        message?.remove();
-    });
+    // const errorMessageArray = document.querySelectorAll('.error-message-block');
 
+
+    const inputName = target.celebrantName.value.trim();
     const inputDate = target.celebrantDate.value.trim();
-    if (inputDate) {
-        isValidDate = true;
+    if (!inputName) {
+        const labelForInput = document.querySelector('.label-for__input__1');
+        const errorMessage = labelForInput.querySelector('.error-message-block');
+        errorMessage?.remove();
+        generateErrorMessage("Заполните имя", 1);
     }
+    if (!inputDate) {
+        const labelForInput = document.querySelector('.label-for__input__2');
+        const errorMessage = labelForInput.querySelector('.error-message-block');
+        errorMessage?.remove();
+        generateErrorMessage("Заполните дату", 2);
+    }
+
+
     // заполнение 
     if (isValidDate && isValidName) {
         const newId = new Date().getTime();
@@ -155,6 +209,20 @@ addCelebrantBoxForm.addEventListener('submit', (event) => {
         celebrantsList.append(newHtmlCard);
         localStorage.setItem("birthdays", JSON.stringify(birthdays));
         addCelebrantBoxForm.reset();
+        const modalSuccessAddition = document.querySelector('.modal-success-addition');
+        const modalSuccessAdditionClose = document.querySelector('.modal-success-addition-close');
+        modalSuccessAddition.classList.remove('modal-success-addition-hidden');
+        modalSuccessAdditionClose.addEventListener('click', () => {
+            modalSuccessAddition.classList.add('modal-success-addition-hidden');
+        })
+        setTimeout(() => {
+            modalSuccessAddition.classList.add('modal-success-addition-hidden');
+        }, 4000);
+        const aboutBirthday = document.querySelector('.about-birthday');
+        aboutBirthday?.remove();
+        isValidName = false;
+        isValidDate = false;
+        addCelebrantBoxButton.classList.add('add-celebrant-box__button-disabled');
     }
 });
 
@@ -168,6 +236,7 @@ celebrantsList.addEventListener('click', (event) => {
     deleteCelebrantsId = event.target.dataset.deleteCelebrantsId;
     if (isDeleteButton) {
         modalOverlay.classList.remove('modal-overlay_hidden');
+
     };
 });
 cancelButton.addEventListener('click', (event) => {
@@ -185,6 +254,8 @@ confirmButton.addEventListener('click', (event) => {
     birthdays.splice(indexOfDeleteCelebrantsItem, 1);
     localStorage.setItem("birthdays", JSON.stringify(birthdays));
     modalOverlay.classList.add('modal-overlay_hidden');
+    const aboutBirthday = document.querySelector('.about-birthday');
+    aboutBirthday?.remove();
 });
 
 //Функция подсчета ближайшего дня рождения

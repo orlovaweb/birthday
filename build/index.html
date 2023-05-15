@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday</title>
+    <meta name="description" content="Программа по нахождению ближайшего дня рождения из списка именинников ">
+    <!-- Open Graph -->
+
+    <meta name="og:type" content="website">
+    <meta name="og:url" content="http://birthday.orlovaweb.ru/">
+    <meta property="og:description" content="Программа по нахождению ближайшего дня рождения из списка именинников">
+    <meta property="og:site_name" content="Нахождение ближайшего именинника" />
+    <meta property="og:title" content="Кого будем поздравлять?">
+    <meta name="og:image" content="http://birthday.orlovaweb.ru/preview.png">
+    <meta property="og:image:width" content="532" />
+    <meta property="og:image:height" content="250" />
+    <!-- <meta name="robots" content="max-image-preview:large"> -->
+    <link rel="shortcut icon" type="image/x-icon">
+    <title>Кого будем поздравлять?</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Montserrat:wght@400;700&display=swap"
@@ -14,7 +27,6 @@
 <script defer src="build.js"></script></head>
 
 <body>
-    <!-- <input type="text" id="db"> -->
     <header class="header">
         <div id="scene" class="scene">
 
@@ -42,32 +54,25 @@
                             <label class="label-for__input label-for__input__2">
                                 <input id="celebrantDate" name="celebrantDate"
                                     class="add-celebrant-box__input input-date" type="text" placeholder="Дата рождения"
-                                    data-format="**.**.****" data-mask="MM.DD.YYYY" autocomplete="off">
+                                    data-format="**.**.****" data-mask="MM.DD.YYYY" autocomplete="off" maxlength="10">
                             </label>
                         </div>
 
-                        <button type="submit" class="add-celebrant-box__button default-button">
+                        <button type="submit"
+                            class="add-celebrant-box__button add-celebrant-box__button-disabled default-button">
 
                             Добавить
                         </button>
                     </form>
                 </div>
             </div>
-            <!-- </div> -->
         </div>
-        <!-- <div class="header-left-decor"></div>
-        <div class="header-right-decor"></div> -->
 
     </header>
     <section class="celebrants">
         <div class="container">
             <div class="celebrants-list">
                 <h2 class="celebrants-list__title title">Список именинников</h2>
-                <!-- <div class="celebrants-item" data-celebrants-id="1">
-                    <div class="celebrants-item__name celebrants-item__string">Имя</div>
-                    <div class="celebrants-item__date celebrants-item__string">25.08</div>
-                    <button class="celebrants-item__delete" title="Удалить данную карточку" data-delete-celebrants-id="5"></button>
-                </div>-->
             </div>
             <div class="celebrants-images-block">
                 <img class="celebrants-images-item-right default-img">
@@ -99,12 +104,28 @@
                 <button class="delete-modal__button
         delete-modal__cancel-button">
                     Отмена
-                </button>
-                <button class="delete-modal__button
+                    <button class="delete-modal__button
         delete-modal__confirm-button ">
-                    Удалить
-                </button>
+                        Удалить
+                    </button>
             </div>
+        </div>
+    </div>
+    <div class="modal-success-addition modal-success-addition-hidden">
+        <div class="modal-success-addition__content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#ffffff" class="bi bi-check-circle"
+                viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+            </svg>
+            <p>Именинник успешно добавлен</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-x modal-success-addition-close" viewBox="0 0 16 16">
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+
         </div>
     </div>
 </body>

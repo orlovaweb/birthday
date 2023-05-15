@@ -9,6 +9,7 @@ import UrlImg8 from './img/8.webp';
 import UrlImg9 from './img/9.webp';
 import UrlFooterLogo from './img/logo.svg';
 
+
 const decorImages = document.querySelectorAll('.default-img');
 const footerLogo = document.querySelector('.footer__logo img');
 footerLogo.src = UrlFooterLogo;
@@ -21,6 +22,9 @@ decorImages[5].src = UrlImg6;
 decorImages[6].src = UrlImg7;
 decorImages[7].src = UrlImg8;
 decorImages[8].src = UrlImg9;
+
+
+
 const birthdays = [
   {
     id: 1683309719080,
